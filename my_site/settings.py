@@ -29,9 +29,9 @@ SECRET_KEY = 'django-insecure-a(%04tgqa_4x*ei0&b!g^qp51vc35yd6aylfme1za&iyy*=a4k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
-
+SITE_ID = 1 #required for the sites framework. If you have multiple sites, you can set this to the appropriate site ID.
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,9 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites', #enables the sites framework.
+    'django.contrib.sitemaps', #sitemap framework.
+
+    #3rd party apps.
+    "taggit",
+    "django.contrib.postgres", #enables PostgreSQL-specific features.
 
     #my apps.
     "blog.apps.BlogConfig",
+    
 ]
 
 MIDDLEWARE = [
@@ -81,8 +88,14 @@ WSGI_APPLICATION = 'my_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST"),
+        'PORT': config("DB_PORT", default="5432"),
     }
 }
 
